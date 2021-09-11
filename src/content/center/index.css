@@ -1,0 +1,7 @@
+.router {
+  flex-grow: 1;
+  flex-shrink: 0;
+  height: 100%;
+  overflow: auto;
+  background: rgba(81,47,124,0.05);
+}

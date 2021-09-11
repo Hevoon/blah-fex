@@ -1,0 +1,19 @@
+.add {
+  flex-grow: 1;
+  flex-shrink: 0;
+  height: calc(100% - 48px);
+  width: calc(100% - 48px);
+  margin: 24px;
+  padding: 24px;
+  border-radius: 4px;
+  /* background-color: #FFF; */
+  box-shadow: 0px 0px 3px 0  rgba(81,47,124,0.5);
+}
+.table{
+  width: 100%;
+  margin-top: 24px;
+}
+.btn{
+  margin: 0 auto;
+  width: 80%;
+}
