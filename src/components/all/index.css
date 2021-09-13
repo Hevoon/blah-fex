@@ -1,0 +1,24 @@
+.find {
+  flex-grow: 1;
+  flex-shrink: 0;
+  width: calc(100% - 48px);
+  display: flex;
+  align-self: center;
+  margin: 24px;
+  padding: 24px;
+  border-radius: 4px;
+  background-color: #FFF;
+  flex-wrap: wrap;
+}
+.table1{
+  width: 100%;
+  margin-bottom: 24px;
+}
+.table2{
+  width: 100%;
+  /* margin-top: 24px; */
+}
+.form-box{
+  margin-top: 30px;
+  display: block;
+}

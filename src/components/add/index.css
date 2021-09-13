@@ -6,8 +6,8 @@
   margin: 24px;
   padding: 24px;
   border-radius: 4px;
-  /* background-color: #FFF; */
-  box-shadow: 0px 0px 3px 0  rgba(81,47,124,0.5);
+  background-color: #FFF;
+  /* box-shadow: 0px 0px 3px 0  rgba(81,47,124,0.5); */
 }
 .table{
   width: 100%;

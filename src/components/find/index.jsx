@@ -96,6 +96,16 @@ const Find = () => {
   }
   return (
     <div className={'find'}>
+      <div
+        style={{
+          fontSize: '20px',
+          fontWeight: 800,
+          width: '100%',
+          marginBottom: '16px',
+        }}
+      >
+        框架默写
+      </div>
       <Button type="primary" size={'large'} onClick={find} loading={loading1}>
         查询框架
       </Button>
@@ -103,9 +113,18 @@ const Find = () => {
         columns={columns1}
         dataSource={data1}
         className={'table1'}
-        title={() => '框架默写'}
         pagination={false}
       />
+      <div
+        style={{
+          fontSize: '20px',
+          fontWeight: 800,
+          width: '100%',
+          marginBottom: '16px',
+        }}
+      >
+        模拟练题
+      </div>
       <Button type="primary" size={'large'} onClick={find1} loading={loading2}>
         获取模拟练题
       </Button>
@@ -113,7 +132,6 @@ const Find = () => {
         columns={columns2}
         dataSource={data2}
         className={'table2'}
-        title={() => '模拟练题'}
         pagination={false}
       />
     </div>

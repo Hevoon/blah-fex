@@ -28,6 +28,7 @@ const WrapperMenu = () => {
         {/* <Menu.ItemGroup key="g1" title="题目"> */}
         <Menu.Item key="find">抽取题目</Menu.Item>
         <Menu.Item key="add">录入题目</Menu.Item>
+        <Menu.Item key="all">题库</Menu.Item>
         {/* </Menu.ItemGroup> */}
       </SubMenu>
     </Menu>

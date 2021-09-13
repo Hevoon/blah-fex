@@ -104,11 +104,11 @@ export default () => {
             title="题目类别"
             x-component="Select"
             x-decorator="FormItem"
-            default="简答题"
+            default="名词解释"
             required
             enum={[
-              { label: '简答题', value: '简答题' },
               { label: '名词解释', value: '名词解释' },
+              { label: '简答题', value: '简答题' },
               { label: '论述题', value: '论述题' },
               { label: '综合题', value: '综合题' },
             ]}
@@ -121,7 +121,7 @@ export default () => {
             required
           />
         </SchemaField>
-        <div className='btn'>
+        <div className="btn">
           <Submit block size="large" loading={loading}>
             录入
           </Submit>
