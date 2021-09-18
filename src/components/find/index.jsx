@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { Table, Radio, Button, message } from 'antd'
+import {
+  useRecoilState,
+} from 'recoil'
 import { get } from '../../utils/http'
 import moment from 'moment'
+import { topic, framework } from '../../store'
 import './index.css'
 const columns1 = [
   {
@@ -72,8 +76,10 @@ const columns2 = [
 ]
 
 const Find = () => {
-  const [data1, setData1] = useState([])
-  const [data2, setData2] = useState([])
+  const [data1, setData1] = useRecoilState(framework) || []
+  const [data2, setData2] = useRecoilState(topic) || []
+  // const [data1, setData1] = useState([])
+  // const [data2, setData2] = useState([])
   const [loading1, setloading1] = useState(false)
   const [loading2, setloading2] = useState(false)
   const find = async () => {
