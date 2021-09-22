@@ -43,7 +43,7 @@ const All = () => {
         ? Math.floor(total / 10) + 1
         : Math.floor(total / 10)
     if (max < current) {
-      setCurrent(max)
+      setCurrent(max || 1)
     }
   }
   useEffect(() => {

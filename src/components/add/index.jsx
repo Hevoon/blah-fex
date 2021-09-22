@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { createForm } from '@formily/core'
 import { createSchemaField, FormConsumer } from '@formily/react'
 import { Form, FormItem, Input, Select, Submit } from '@formily/antd'
@@ -21,6 +21,7 @@ const SchemaField = createSchemaField({
 
 export default () => {
   const [loading, setLoading] = useState(false)
+  const ref = useRef(null)
   const onSubmit = (e) => {
     let formDate = new FormData()
     formDate.append('name', e.name)
@@ -47,85 +48,89 @@ export default () => {
   }
   return (
     <div className="add">
-      <Form form={form} onAutoSubmit={onSubmit}>
-        <SchemaField>
-          <SchemaField.String
-            required
-            name="select"
-            title="录入类型"
-            default="v2"
-            enum={[
-              { label: '框架', value: 'v1' },
-              { label: '模拟题目', value: 'v2' },
-            ]}
-            x-component="Select"
-            x-decorator="FormItem"
-            x-reactions={[
-              {
-                target: 'name',
-                fulfill: {
-                  // state: {
-                  //   display: '{{$self.value}}',
-                  // },
-                  schema: {
-                    title: '{{$self.value === "v1"?"书籍名称" :"真题题目"}}',
+      {!loading && (
+        <Form form={form} onAutoSubmit={onSubmit}>
+          <SchemaField>
+            <SchemaField.String
+              required
+              name="select"
+              title="录入类型"
+              default="v2"
+              enum={[
+                { label: '框架', value: 'v1' },
+                { label: '模拟题目', value: 'v2' },
+              ]}
+              x-component="Select"
+              x-decorator="FormItem"
+              x-reactions={[
+                {
+                  target: 'name',
+                  fulfill: {
+                    // state: {
+                    //   display: '{{$self.value}}',
+                    // },
+                    schema: {
+                      title: '{{$self.value === "v1"?"书籍名称" :"真题题目"}}',
+                    },
                   },
                 },
-              },
-              {
-                target: 'content',
-                fulfill: {
-                  schema: {
-                    title: '{{$self.value === "v1"?"框架章节" :"题目内容"}}',
-                    'x-component':
-                      '{{$self.value === "v1"?"Input" :"TextArea"}}',
+                {
+                  target: 'content',
+                  fulfill: {
+                    schema: {
+                      title: '{{$self.value === "v1"?"框架章节" :"题目内容"}}',
+                      'x-component':
+                        '{{$self.value === "v1"?"Input" :"TextArea"}}',
+                    },
                   },
                 },
-              },
-              {
-                target: 'category',
-                fulfill: {
-                  state: {
-                    visible: '{{$self.value === "v2"}}',
+                {
+                  target: 'category',
+                  fulfill: {
+                    state: {
+                      visible: '{{$self.value === "v2"}}',
+                    },
                   },
                 },
-              },
-            ]}
-          />
-          <SchemaField.String
-            name="name"
-            title="真题题目"
-            x-component="Input"
-            x-decorator="FormItem"
-            required
-          />
-          <SchemaField.String
-            name="category"
-            title="题目类别"
-            x-component="Select"
-            x-decorator="FormItem"
-            default="名词解释"
-            required
-            enum={[
-              { label: '名词解释', value: '名词解释' },
-              { label: '简答题', value: '简答题' },
-              { label: '论述题', value: '论述题' },
-              { label: '综合题', value: '综合题' },
-            ]}
-          />
-          <SchemaField.String
-            name="content"
-            title="题目内容"
-            x-component="TextArea"
-            x-decorator="FormItem"
-          />
-        </SchemaField>
-        <div className="btn">
-          <Submit block size="large" loading={loading}>
-            录入
-          </Submit>
-        </div>
-      </Form>
+              ]}
+            />
+            <SchemaField.String
+              name="name"
+              title="真题题目"
+              x-component="Input"
+              x-decorator="FormItem"
+              x-component-props={{ autoFocus: true }}
+              required
+            />
+            <SchemaField.String
+              name="category"
+              title="题目类别"
+              x-component="Select"
+              x-decorator="FormItem"
+              default="名词解释"
+              required
+              enum={[
+                { label: '名词解释', value: '名词解释' },
+                { label: '简答题', value: '简答题' },
+                { label: '论述题', value: '论述题' },
+                { label: '综合题', value: '综合题' },
+              ]}
+            />
+            <SchemaField.String
+              name="content"
+              title="题目内容"
+              x-component="TextArea"
+              x-decorator="FormItem"
+              x-component-props={{ className: 'content' }}
+            />
+          </SchemaField>
+          <div className="btn">
+            <Submit block size="large" loading={loading}>
+              录入
+            </Submit>
+          </div>
+        </Form>
+      )}
     </div>
   )
 }
