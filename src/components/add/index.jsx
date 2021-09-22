@@ -37,7 +37,7 @@ export default () => {
         setLoading(false)
         message.success('创建成功')
         // form.reset()
-        const init = { name: '', category: '简答题', content: '' }
+        const init = { name: '', category: e.category || '', content: '' }
         if (!e.category) {
           init.category = ''
         }
@@ -56,7 +56,7 @@ export default () => {
             default="v2"
             enum={[
               { label: '框架', value: 'v1' },
-              { label: '真题题目', value: 'v2' },
+              { label: '模拟题目', value: 'v2' },
             ]}
             x-component="Select"
             x-decorator="FormItem"
@@ -118,7 +118,6 @@ export default () => {
             title="题目内容"
             x-component="TextArea"
             x-decorator="FormItem"
-            required
           />
         </SchemaField>
         <div className="btn">

@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Table, Radio, Button, message } from 'antd'
-import {
-  useRecoilState,
-} from 'recoil'
+import { useRecoilState } from 'recoil'
 import { get } from '../../utils/http'
 import moment from 'moment'
 import { topic, framework } from '../../store'
@@ -82,23 +80,55 @@ const Find = () => {
   // const [data2, setData2] = useState([])
   const [loading1, setloading1] = useState(false)
   const [loading2, setloading2] = useState(false)
+  useEffect(() => {
+    const value1 = localStorage.getItem('framework')
+    const value2 = localStorage.getItem('topic')
+    setData1(JSON.parse(value1))
+    setData2(JSON.parse(value2))
+  }, [])
+  const clear1 = () => {
+    localStorage.removeItem('framework')
+    message.info('已清除抽到的框架')
+  }
+  const clear2 = () => {
+    localStorage.removeItem('topic')
+    message.info('已清除抽到的题目')
+  }
   const find = async () => {
     setloading1(true)
-    const res = await get('/getFramework')
-    setloading1(false)
-    if (!res.data || res.data.length < 1) {
-      message.info('未录入框架')
+    const value = localStorage.getItem('framework')
+    if (!value) {
+      const res = await get('/getFramework')
+      setloading1(false)
+      if (!res.data || res.data.length < 1) {
+        message.info('未录入框架')
+      }
+      const stringData = JSON.stringify(res.data)
+      window.localStorage.setItem('framework', stringData)
+      setData1(res.data)
+    } else {
+      message.info('本地已存在抽到的题目')
+      setData1(JSON.parse(value))
+      setloading1(false)
     }
-    setData1(res.data)
   }
   const find1 = async () => {
     setloading2(true)
-    const res = await get('/getTopic')
-    if (!res.data || res.data.length < 1) {
-      message.info('未查询到数据')
+    const value = localStorage.getItem('topic')
+    if (!value) {
+      const res = await get('/getTopic')
+      if (!res.data || res.data.length < 1) {
+        message.info('未查询到数据')
+      }
+      setloading2(false)
+      const stringData = JSON.stringify(res.data)
+      window.localStorage.setItem('topic', stringData)
+      setData2(res.data)
+    } else {
+      message.info('本地已存在抽到的题目')
+      setData2(JSON.parse(value))
+      setloading2(false)
     }
-    setloading2(false)
-    setData2(res.data)
   }
   return (
     <div className={'find'}>
@@ -114,6 +144,9 @@ const Find = () => {
       </div>
       <Button type="primary" size={'large'} onClick={find} loading={loading1}>
         查询框架
+      </Button>
+      <Button type="primary" size={'large'} style={{marginLeft:'20px'}} onClick={clear1}>
+        清除本地框架
       </Button>
       <Table
         columns={columns1}
@@ -133,6 +166,9 @@ const Find = () => {
       </div>
       <Button type="primary" size={'large'} onClick={find1} loading={loading2}>
         获取模拟练题
+      </Button>
+      <Button type="primary" style={{marginLeft:'20px'}} size={'large'} onClick={clear2}>
+        清除本地题目
       </Button>
       <Table
         columns={columns2}
