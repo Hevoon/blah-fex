@@ -71,16 +71,12 @@ const All = () => {
   }
   const onOpen = (e) => {
     setInit({ name: e.name, category: e.category, content: e.content })
-    console.log(e, init, {
+    form.setValues({
       name: e.name,
       category: e.category,
       content: e.content,
     })
-    form.setInitialValues({
-      name: e.name,
-      category: e.category,
-      content: e.content,
-    })
+    console.log(e)
     setId(e.id)
     setVisible(true)
   }
