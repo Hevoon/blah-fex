@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Radio, Button, message } from 'antd'
+import { Table, Radio, Button, message, Modal } from 'antd'
 import { useRecoilState } from 'recoil'
+import { SettingFilled } from '@ant-design/icons'
 import { get } from '../../utils/http'
 import moment from 'moment'
+import { createForm } from '@formily/core'
+import { createSchemaField, FormConsumer } from '@formily/react'
+import { Form, FormItem, Input, Select, Submit } from '@formily/antd'
 import { topic, framework } from '../../store'
 import './index.css'
 const columns1 = [
@@ -72,7 +76,17 @@ const columns2 = [
     },
   },
 ]
-
+const { TextArea } = Input
+const form = createForm()
+const SchemaField = createSchemaField({
+  components: {
+    FormItem,
+    Input,
+    Select,
+    Input,
+    TextArea,
+  },
+})
 const Find = () => {
   const [data1, setData1] = useRecoilState(framework) || []
   const [data2, setData2] = useRecoilState(topic) || []
@@ -80,6 +94,13 @@ const Find = () => {
   // const [data2, setData2] = useState([])
   const [loading1, setloading1] = useState(false)
   const [loading2, setloading2] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [setting, setSetting] = useState({
+    jian: 5,
+    ming: 7,
+    lun: 2,
+    zong: 1,
+  })
   useEffect(() => {
     const value1 = localStorage.getItem('framework')
     const value2 = localStorage.getItem('topic')
@@ -116,7 +137,11 @@ const Find = () => {
     setloading2(true)
     const value = localStorage.getItem('topic')
     if (!value) {
-      const res = await get('/getTopic')
+      const res = await get(
+        `/getTopic?jian=${setting.jian || 5}&&ming=${setting.ming || 7}&&lun=${
+          setting.lun || 2
+        }&&zong=${setting.zong || 1}`
+      )
       if (!res.data || res.data.length < 1) {
         message.info('未查询到数据')
       }
@@ -129,6 +154,17 @@ const Find = () => {
       setData2(JSON.parse(value))
       setloading2(false)
     }
+  }
+  const handleEditor = async () => {
+    const e = form.values || {}
+    console.log(e)
+    setSetting({
+      jian: e.jian || 5,
+      ming: e.ming || 7,
+      lun: e.lun || 2,
+      zong: e.zong || 1,
+    })
+    setVisible(false)
   }
   return (
     <div className={'find'}>
@@ -145,7 +181,12 @@ const Find = () => {
       <Button type="primary" size={'large'} onClick={find} loading={loading1}>
         查询框架
       </Button>
-      <Button type="primary" size={'large'} style={{marginLeft:'20px'}} onClick={clear1}>
+      <Button
+        type="primary"
+        size={'large'}
+        style={{ marginLeft: '20px' }}
+        onClick={clear1}
+      >
         清除本地框架
       </Button>
       <Table
@@ -167,8 +208,25 @@ const Find = () => {
       <Button type="primary" size={'large'} onClick={find1} loading={loading2}>
         获取模拟练题
       </Button>
-      <Button type="primary" style={{marginLeft:'20px'}} size={'large'} onClick={clear2}>
+      <Button
+        type="primary"
+        style={{ marginLeft: '20px' }}
+        size={'large'}
+        onClick={clear2}
+      >
         清除本地题目
+      </Button>
+      <Button
+        type="primary"
+        style={{ marginLeft: '20px' }}
+        icon={<SettingFilled />}
+        onClick={() => {
+          form.setValues({ ...setting })
+          setVisible(true)
+        }}
+        size="large"
+      >
+        设置题目数量
       </Button>
       <Table
         columns={columns2}
@@ -176,6 +234,45 @@ const Find = () => {
         className={'table2'}
         pagination={false}
       />
+      <Modal
+        visible={visible}
+        destroyOnClose
+        onOk={handleEditor}
+        onCancel={() => setVisible(false)}
+        okText={'提交'}
+        cancelText="取消"
+        width={'60%'}
+        title={'设置查题数量'}
+      >
+        <Form form={form} className={'form-box'}>
+          <SchemaField>
+            <SchemaField.Number
+              name="jian"
+              title="简答题数量"
+              x-component="Input"
+              x-decorator="FormItem"
+            />
+            <SchemaField.Number
+              name="ming"
+              title="名词解释数量"
+              x-component="Input"
+              x-decorator="FormItem"
+            />
+            <SchemaField.Number
+              name="lun"
+              title="论述题数量"
+              x-component="Input"
+              x-decorator="FormItem"
+            />
+            <SchemaField.Number
+              name="zong"
+              title="综合题数量"
+              x-component="Input"
+              x-decorator="FormItem"
+            />
+          </SchemaField>
+        </Form>
+      </Modal>
     </div>
   )
 }
